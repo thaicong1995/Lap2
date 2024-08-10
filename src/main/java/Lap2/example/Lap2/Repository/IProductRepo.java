@@ -14,11 +14,12 @@ public interface IProductRepo extends JpaRepository<Product, Integer> {
     @Query(value = "SELECT * FROM product " +
             "WHERE (:categoryId IS NULL OR category_id = :categoryId) " +
             "AND (:producerId IS NULL OR producer_id = :producerId) " +
-            "ORDER BY id DESC " +
+            "AND (:key IS NULL OR :key = '' OR LOWER(name) LIKE LOWER(CONCAT('%', :key, '%'))) " +
             "LIMIT :pageSize OFFSET :offset",
             nativeQuery = true)
     List<Product> Paging(@Param("categoryId") Integer categoryId,
                          @Param("producerId") Integer producerId,
+                         @Param("key") String key,
                          @Param("pageSize") int pageSize,
                          @Param("offset") int offset);
 
@@ -26,8 +27,10 @@ public interface IProductRepo extends JpaRepository<Product, Integer> {
 
     @Query(value = "SELECT COUNT(*) FROM product " +
             "WHERE (:categoryId IS NULL OR category_id = :categoryId) " +
-            "AND (:producerId IS NULL OR producer_id = :producerId)",
+            "AND (:producerId IS NULL OR producer_id = :producerId) " +
+            "AND (:key IS NULL OR :key = '' OR LOWER(name) LIKE LOWER(CONCAT('%', :key, '%')))",
             nativeQuery = true)
     long countProducts(@Param("categoryId") Integer categoryId,
-                       @Param("producerId") Integer producerId);
+                       @Param("producerId") Integer producerId,
+                       @Param("key") String key);
 }

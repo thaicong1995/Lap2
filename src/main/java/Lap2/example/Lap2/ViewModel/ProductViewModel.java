@@ -25,6 +25,7 @@ public class ProductViewModel extends Product {
     public static class ProductRequest extends PagingModel {
         private Integer category_id;
         private Integer producer_id;
+        private String key;
     }
 
     @Getter

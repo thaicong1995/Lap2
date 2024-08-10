@@ -28,14 +28,16 @@ public class ProductController {
     @GetMapping("/product/all")
     public ResponseEntity<ProductViewModel.ProductResponse> findAll(@RequestParam(defaultValue = "1") int page,
                                                                     @RequestParam(defaultValue = "10") int pageSize,
+                                                                    @RequestParam(required = false) String key,
                                                                     @RequestParam(required = false) Integer categoryId,
                                                                     @RequestParam(required = false) Integer producerId) {
-        // Create request object with nullable Integer values
+
         ProductViewModel.ProductRequest request = new ProductViewModel.ProductRequest();
         request.setPage(page);
         request.setPageSize(pageSize);
         request.setCategory_id(categoryId);
         request.setProducer_id(producerId);
+        request.setKey(key);
 
         ProductViewModel.ProductResponse response = service.paging(request);
         return ResponseEntity.ok(response);

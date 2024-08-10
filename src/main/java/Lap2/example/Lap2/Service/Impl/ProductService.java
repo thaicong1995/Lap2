@@ -40,12 +40,19 @@ public class ProductService implements IProductService<ProductViewModel> {
     public ProductViewModel.ProductResponse paging(ProductViewModel.ProductRequest request) {
         int offset = (request.getPage() - 1) * request.getPageSize();
 
+        request.getKey();
+
         List<Product> products = repo.Paging(request.getCategory_id(),
                 request.getProducer_id(),
+                request.getKey(),
                 request.getPageSize(),
                 offset);
 
-        long totalItems = repo.countProducts(request.getCategory_id(), request.getProducer_id());
+        long totalItems = repo.countProducts(
+                request.getCategory_id(),
+                request.getProducer_id(),
+                request.getKey()
+        );
 
         int totalPages = (int) Math.ceil((double) totalItems / request.getPageSize());
 
